@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div div="list-group">
+            <div class="list-group-item">
+                <img src="~/Content/Images/crops.png" alt="Our Crops" />
+                <a href='@Url.Action("Index", "Crops")' class="btn-link" style="text-align:right">Our Crops</a>
+            </div>
+            <div class="list-group-item">
+                <img src="~/Content/Images/acres.png" alt="Our Acres" />
+
+                <a href='@Url.Action("Index","Locations")' class="btn-link" style="text-align:right">Our Acres</a>
+            </div>
+            <div class="list-group-item">   
+                <img src="~/Content/Images/Diary.png" alt="Diary" />  
+                <a href='@Url.Action("Index","CalendarItems")' class="btn-link" style="text-align:right">Our Gardening Diary</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+}

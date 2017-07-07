@@ -1,0 +1,104 @@
+﻿@model IEnumerable<GloriousGarden.Models.Crops>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-xs-2">
+        <img src="~/Content/Images/clematis.png" alt="Clematis" class="midimage" />
+    </div>
+    <div class="col-xs-2">
+        <img src="~/Content/Images/apples.png" alt="Apples" class="midimage" />
+    </div>
+    <div class="col-xs-2">
+        <img src="~/Content/Images/crops.png" alt="Crops" class="midimage" />
+    </div>
+    <div class="col-xs-2">
+        <img src="~/Content/Images/courgette.png" alt="Courgette" class="midimage" />
+    </div>
+    <div class="col-xs-2">
+        <img src="~/Content/Images/dahlia.png" alt="Dahlia" class="midimage" />
+    </div><div class="col-xs-2">
+        <img src="~/Content/Images/crops.png" alt="Crops" class="midimage" />
+    </div>
+</div>
+<h2>Crop Record</h2>
+
+<p>
+    @Html.ActionLink("New", "Create")
+</p>
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location.LocationName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CropName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Variety)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SownDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlantedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HarvestDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.yield)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.satisfaction)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.notes)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CropName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Variety)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SownDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlantedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HarvestDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.yield)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.satisfaction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.notes)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

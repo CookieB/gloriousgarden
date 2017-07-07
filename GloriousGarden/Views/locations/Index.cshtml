@@ -1,0 +1,38 @@
+﻿@model IEnumerable<GloriousGarden.Models.location>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+
+    <div class="col-md-6">
+        <img src="~/Content/Images/location2.png" alt="Raised Bed" class="midimage" />
+    </div>
+</div>
+<h2>Raised Beds</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LocationId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LocationId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LocationId })
+        </td>
+    </tr>
+}
+
+</table>

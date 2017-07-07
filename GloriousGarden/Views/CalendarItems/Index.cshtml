@@ -1,0 +1,110 @@
+﻿@model IEnumerable<GloriousGarden.Models.CalendarItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+<!--<div id="evdetail" class="ev1" ><span id="evDate">date</span><span class="space10">Title</span><span class="space10"><input type="text" id="evtitle"/></span><span class="space10">Description</span><span class="space10"><input type="text" id="evdesc" /></span><span class="space10"><button id="setEvent" type="button" >Go</button></span></div>-->
+<div id='calendar'></div>
+
+<div id="popupEventForm" class="modal fade modal-dialog" style=display:none;>
+    <div class="modal-content">
+        <div class="modal-header"><h3>Add new item</h3></div>
+        <div class="modal-body">
+            <form id="EventForm" class="well">
+                <div class="well row">
+                    <input type="hidden" id="eventID">
+                    <div style="float:left">
+                        <label>Description</label><br />
+                        <label>Scheduled date</label>
+                    </div>
+                    <div style="float:left">
+                        <input type="text" id="eventTitle" placeholder="Title here"><br />
+                        <input type="text" id="eventDate"><br />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn">Cancel</button>
+            <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery-UI")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/fullcalendar")
+
+    <script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+
+            $('#calendar').fullCalendar({
+                events: '/CalendarItems/GetDiaryEvents/',
+                eventRender: function (event, element) {
+                    element = $("<td></td>").text = event.description;
+                },
+                timezone: 'local',
+                displayEventTime: false,
+                editable: true,
+                selectable: true,
+                defaultView: 'month',
+                dayClick: function (date, allDay, jsEvent, view) {
+                    $('#eventTitle').val("");
+                    $('#eventDate').val(moment(date, 'DD.MM.YYYY').format('DD-MMM-YYYY'));
+                    ShowEventPopup(date);
+                }
+            })
+            //$('#setEvent').click(function () {
+            //    var myEv = {
+            //        title: $('#evtitle').val(),
+            //        description:  $('#evdesc').val(),
+            //        start: $.datepicker.formatDate('mm-dd-yy',new Date($('#evDate').text())) //new Date($('#evDate').text())
+            //    }
+            //    $('#evdetail').hide();
+            //    $('#calendar').fullCalendar('renderEvent', myEv, true);
+            //});
+
+            function ShowEventPopup(date) {
+                //ClearPopupFormValues();
+                $('#popupEventForm').modal('show');
+                $('#eventTitle').focus();
+            }
+
+            function ClearPopupFormValues() {
+                $('#eventID').val("");
+                $('#eventTitle').val("");
+                $('#eventDate').val("");
+            }
+
+            $('#btnPopupSave').click(function () {
+
+                $('#popupEventForm').hide();
+
+                var dataRow = {
+                    'Title': $('#eventTitle').val(),
+                    'NewEventDate': $('#eventDate').val(),
+                }
+
+                ClearPopupFormValues();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/CalendarItems/SaveEvent",
+                    data: dataRow,
+                    success: function (response) {
+                        if (response == 'True'){
+                        $('#calendar').fullCalendar('refetchEvents');
+                        alert('New event saved!');
+                        }
+                        else {
+                            alert('Error, could not save event!');
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>}
+

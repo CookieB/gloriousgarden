@@ -1,0 +1,98 @@
+﻿@model GloriousGarden.Models.Crops
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Crops</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Location.LocationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location.LocationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CropName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CropName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Variety)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Variety)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SownDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SownDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlantedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlantedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GerminationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GerminationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HarvestDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HarvestDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.yield)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.yield)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.satisfaction)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.satisfaction)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.notes)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
