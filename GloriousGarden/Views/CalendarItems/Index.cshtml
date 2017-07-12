@@ -1,32 +1,56 @@
-﻿@model IEnumerable<GloriousGarden.Models.CalendarItem>
-
+﻿
 @{
     ViewBag.Title = "Index";
 }
 <!--<div id="evdetail" class="ev1" ><span id="evDate">date</span><span class="space10">Title</span><span class="space10"><input type="text" id="evtitle"/></span><span class="space10">Description</span><span class="space10"><input type="text" id="evdesc" /></span><span class="space10"><button id="setEvent" type="button" >Go</button></span></div>-->
 <div id='calendar'></div>
-
 <div id="popupEventForm" class="modal fade modal-dialog" style=display:none;>
     <div class="modal-content">
-        <div class="modal-header"><h3>Add new item</h3></div>
+        <div class="modal-header"><h3>Add Event</h3></div>
         <div class="modal-body">
             <form id="EventForm" class="well">
                 <div class="well row">
-                    <input type="hidden" id="eventID">
+                    <input type="hidden" class="eventID">
                     <div style="float:left">
                         <label>Description</label><br />
                         <label>Scheduled date</label>
                     </div>
                     <div style="float:left">
-                        <input type="text" id="eventTitle" placeholder="Title here"><br />
-                        <input type="text" id="eventDate"><br />
+                        <input type="text" id="newEventTitle" class="eventTitle" placeholder="Title here"><br />
+                        <input type="text" id="newEventDate" class="eventDate"><br />
                     </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn">Cancel</button>
-            <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+            <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Add event</button>
+        </div>
+    </div>
+</div>
+
+<div id="popupEventEditForm" class="modal fade modal-dialog" style=display:none;>
+    <div class="modal-content">
+        <div class="modal-header"><h3>Edit Event</h3></div>
+        <div class="modal-body">
+            <form id="EventForm" class="well">
+                <div class="well row">
+                    <input type="hidden" class="eventID">
+                    <div style="float:left">
+                        <label>Description</label><br />
+                        <label>Scheduled date</label>
+                    </div>
+                    <div style="float:left">
+                        <input type="text" id="eventTitle" class="eventTitle" placeholder="Title here"><br />
+                        <input type="text" id="eventDate" class="eventDate"><br />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="btnPopupDeleteCancel" data-dismiss="modal" class="btn">Cancel</button>
+            <button type="button" id="btnPopupSaveEdit" data-dismiss="modal" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="btnPopupDelete" data-dismiss="modal" class="btn btn-primary">Delete</button>
         </div>
     </div>
 </div>
@@ -51,40 +75,97 @@
                 selectable: true,
                 defaultView: 'month',
                 dayClick: function (date, allDay, jsEvent, view) {
-                    $('#eventTitle').val("");
-                    $('#eventDate').val(moment(date, 'DD.MM.YYYY').format('DD-MMM-YYYY'));
+                    $('.eventTitle').val("");
+                    $('.eventDate').val(moment(date, 'DD.MM.YYYY').format('DD-MMM-YYYY'));
                     ShowEventPopup(date);
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    $('.eventID').val(calEvent.id);
+                    $('.eventTitle').val(calEvent.title);
+                    $('.eventDate').val(moment(calEvent.start, 'DD.MM.YYYY').format('DD-MMM-YYYY'));
+                    ShowEventEditPopup(calEvent.start);
                 }
             })
-            //$('#setEvent').click(function () {
-            //    var myEv = {
-            //        title: $('#evtitle').val(),
-            //        description:  $('#evdesc').val(),
-            //        start: $.datepicker.formatDate('mm-dd-yy',new Date($('#evDate').text())) //new Date($('#evDate').text())
-            //    }
-            //    $('#evdetail').hide();
-            //    $('#calendar').fullCalendar('renderEvent', myEv, true);
-            //});
 
+            function ShowEventEditPopup(date) {
+                //ClearPopupFormValues();
+                $('#popupEventEditForm').modal('show');
+                $('.eventTitle').focus();
+            }
             function ShowEventPopup(date) {
                 //ClearPopupFormValues();
                 $('#popupEventForm').modal('show');
-                $('#eventTitle').focus();
+                $('.eventTitle').focus();
             }
 
             function ClearPopupFormValues() {
-                $('#eventID').val("");
-                $('#eventTitle').val("");
-                $('#eventDate').val("");
+                $('.eventID').val("");
+                $('.eventTitle').val("");
+                $('.eventDate').val("");
             }
 
             $('#btnPopupSave').click(function () {
+
+                $('.modal-dialog').hide();
+
+                var dataRow = {
+                    'Title': $('#newEventTitle').val(),
+                    'NewEventDate': $('#newEventDate').val(),
+
+                }
+
+                ClearPopupFormValues();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/CalendarItems/AddEvent",
+                    data: dataRow,
+                    success: function (response) {
+                        if (response == 'True') {
+                            $('#calendar').fullCalendar('refetchEvents');
+                            alert('New event saved!');
+                        }
+                        else {
+                            alert('Error, could not save event!');
+                        }
+                    }
+                });
+            });
+
+            $('#btnPopupDelete').click(function () {
+
+                $('.modal-dialog').hide();
+
+                var dataRow = {
+                    'EventId': $('.eventID').val()
+                }
+
+                ClearPopupFormValues();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/CalendarItems/DeleteEvent",
+                    data: dataRow,
+                    success: function (response) {
+                        if (response == 'True') {
+                            $('#calendar').fullCalendar('refetchEvents');
+                            alert('Event deleted!');
+                        }
+                        else {
+                            alert('Error, could not delete event!');
+                        }
+                    }
+                });
+            });
+
+            $('#btnPopupSaveEdit').click(function () {
 
                 $('#popupEventForm').hide();
 
                 var dataRow = {
                     'Title': $('#eventTitle').val(),
-                    'NewEventDate': $('#eventDate').val(),
+                    'EventDate': $('#eventDate').val(),
+                    'EventId': $('.eventID').val()
                 }
 
                 ClearPopupFormValues();
@@ -94,9 +175,9 @@
                     url: "/CalendarItems/SaveEvent",
                     data: dataRow,
                     success: function (response) {
-                        if (response == 'True'){
-                        $('#calendar').fullCalendar('refetchEvents');
-                        alert('New event saved!');
+                        if (response == 'True') {
+                            $('#calendar').fullCalendar('refetchEvents');
+                            alert('Changes saved!');
                         }
                         else {
                             alert('Error, could not save event!');

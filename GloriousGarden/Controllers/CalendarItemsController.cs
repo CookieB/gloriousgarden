@@ -126,14 +126,22 @@ namespace GloriousGarden.Controllers
         // POST: CalendarItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed()
         {
-            CalendarItem calendarItem = db.CalendarItems.Find(id);
-            db.CalendarItems.Remove(calendarItem);
-            db.SaveChanges();
+            //CalendarItem calendarItem = db.CalendarItems.Find(id);
+            //db.CalendarItems.Remove(calendarItem);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
-        public Boolean SaveEvent(string Title, string NewEventDate)
+        public Boolean DeleteEvent(int EventID)
+        {
+            return CalendarItem.DeleteEvent(EventID);
+        }
+        public Boolean SaveEvent(int EventID,string Title, string EventDate)
+        {
+            return CalendarItem.EditEvent(EventID, EventDate,Title);
+        }
+        public Boolean AddEvent(string Title, string NewEventDate)
         {
             return CalendarItem.AddEvent(NewEventDate, Title);
         }
