@@ -17,7 +17,7 @@ namespace GloriousGarden.Controllers
         //GET: CalendarItems
         public ActionResult Index()
         {
-            return View();
+           return View();
         }
         private static DateTime ConvertFromUnixTimestamp(double timestamp)
         {
@@ -39,100 +39,7 @@ namespace GloriousGarden.Controllers
             var rows = eventList.ToArray();
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
-        // GET: CalendarItems/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CalendarItem calendarItem = db.CalendarItems.Find(id);
-            if (calendarItem == null)
-            {
-                return HttpNotFound();
-            }
-            return View(calendarItem);
-        }
 
-        // GET: CalendarItems/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: CalendarItems/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,EventDate,EventAction")] CalendarItem calendarItem)
-        {
-            if (ModelState.IsValid)
-            {
-                db.CalendarItems.Add(calendarItem);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(calendarItem);
-        }
-
-        // GET: CalendarItems/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CalendarItem calendarItem = db.CalendarItems.Find(id);
-            if (calendarItem == null)
-            {
-                return HttpNotFound();
-            }
-            return View(calendarItem);
-        }
-
-        // POST: CalendarItems/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,EventDate,EventAction")] CalendarItem calendarItem)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(calendarItem).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(calendarItem);
-        }
-
-        // GET: CalendarItems/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CalendarItem calendarItem = db.CalendarItems.Find(id);
-            if (calendarItem == null)
-            {
-                return HttpNotFound();
-            }
-            return View(calendarItem);
-        }
-
-        // POST: CalendarItems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed()
-        {
-            //CalendarItem calendarItem = db.CalendarItems.Find(id);
-            //db.CalendarItems.Remove(calendarItem);
-            //db.SaveChanges();
-            return RedirectToAction("Index");
-        }
         public Boolean DeleteEvent(int EventID)
         {
             return CalendarItem.DeleteEvent(EventID);
