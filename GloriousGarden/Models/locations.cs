@@ -13,7 +13,8 @@ namespace GloriousGarden.Models
         }
         [Key]
         public int LocationId { get; set; }
-        [Required MaxLength(50, ErrorMessage = "Location name be more than 50 characters")]
+        [Required]
+        [MaxLength(50, ErrorMessage = "Location name must be more than 50 characters")]
         [Display(Name ="Location")]
         public string LocationName { get; set; }
 
